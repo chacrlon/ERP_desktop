@@ -1,0 +1,2 @@
+Antes de usar el sistema se debe tener instalado Java y Netbeans en su última versión además de MySql (Aconsejable tener Xampp o Wampserver debido a que traen phpMyadmin que facilita todo el proceso de la base de datos).
+Importar la base de datos “Tienda” e importar SISTEMAVENTAS en Netbeans y compilar. 
