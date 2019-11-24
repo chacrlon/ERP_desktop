@@ -856,7 +856,7 @@ public class Materiales extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_nombreKeyTyped
 
     private void descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descripcionKeyTyped
-        evento.textKeyPress(evt);
+        
     }//GEN-LAST:event_descripcionKeyTyped
 
     private void stockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stockKeyTyped

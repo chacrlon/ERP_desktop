@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-11-2019 a las 00:06:10
+-- Tiempo de generación: 25-11-2019 a las 00:49:13
 -- Versión del servidor: 10.1.40-MariaDB
 -- Versión de PHP: 7.3.5
 
@@ -294,7 +294,11 @@ INSERT INTO `bitacora` (`usuario`, `descripcion`, `fecha`, `hora`, `id_bitacora`
 ('thor', 'Modifico los datos de un material', '2019-11-24', '18:21:32', 254),
 ('thor', 'Modifico los datos de un material', '2019-11-24', '18:21:32', 255),
 ('thor', 'El usuario inicio sesion', '2019-11-24', '18:28:53', 256),
-('thor', 'El usuario inicio sesion', '2019-11-24', '18:31:55', 257);
+('thor', 'El usuario inicio sesion', '2019-11-24', '18:31:55', 257),
+('thor', 'El usuario inicio sesion', '2019-11-24', '19:17:39', 258),
+('thor', 'Registro un nuevo material', '2019-11-24', '19:17:38', 259),
+('thor', 'Modifico los datos de un usuario', '2019-11-24', '19:17:38', 260),
+('thor', 'Modifico los datos de un usuario', '2019-11-24', '19:17:38', 261);
 
 -- --------------------------------------------------------
 
@@ -369,6 +373,13 @@ CREATE TABLE `materiales` (
   `imagen` longblob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `materiales`
+--
+
+INSERT INTO `materiales` (`id_material`, `codigo_material`, `nombre_material`, `descripcion_material`, `stock`, `precio_material`, `dolar_material`, `nomimagen`, `imagen`) VALUES
+(20, '0001', 'Alambre', 'Alambre de metro', 50, 45000, 1.5, '', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -440,10 +451,10 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre1_usuario`, `apellido1_usuario`, `correo`, `clave`, `tipo_usuario`, `pregunta_seguridad`, `respuesta_seguridad`, `status_usuario`) VALUES
-(2, 'Maikel', 'Marquez', 'maikel@gmail.com', '12345', 'Vendedor(a)', '¿Eres adinerado?', 'si', 'Activo'),
-(5, 'Judithh', 'Tarazona', 'judith', '12345', 'Encargado(a)', 'codigox', 'codigo1234', 'Activo'),
-(6, 'juana', 'arco', 'juanadearco@gmail.com', '1234', 'Vendedor(a)', 'sin pregunta', 'sin pregnta', 'Activo'),
-(9, 'thor', 'describan', 'thor@gmail', '1234', 'SuperUsuario', '¿eres guapo?', 'si claro', 'Activo');
+(2, 'maikel', 'Marquez', 'tsmaikel@gmail.com', '123', 'Administrador', '¿Eres adinerado?', 'ufff si', 'Activo'),
+(5, 'Judith', 'Tarazona', 'judith', '12345', 'Encargado(a)', 'codigox', 'codigo1234', 'Activo'),
+(6, 'juana', 'arco', 'juanadearco@gmail.com', '1234', 'Vendedor(a)', 'sin pregunta', 'sin respuesta', 'Activo'),
+(9, 'thor', 'describan', 'thor@gmail', '1234', 'SuperUsuario', '14', '14', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -533,7 +544,7 @@ ALTER TABLE `ventas2`
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id_bitacora` int(99) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+  MODIFY `id_bitacora` int(99) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
@@ -551,7 +562,7 @@ ALTER TABLE `compras2`
 -- AUTO_INCREMENT de la tabla `materiales`
 --
 ALTER TABLE `materiales`
-  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `parametros_adicionales`
