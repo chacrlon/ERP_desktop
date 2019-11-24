@@ -11,7 +11,7 @@ import java.awt.Image;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+import java.text.DecimalFormat; 
 import Modelo.conectar;
 import Validaciones.TextFieldEvent;
 import java.sql.Connection;
@@ -86,14 +86,46 @@ public class Materiales extends javax.swing.JInternalFrame {
     double igv;
     public Materiales() {
         initComponents();
+        parametros();
         total=0;
         sub_total=0;
         igv=0; 
         encargado.setText(p1.getText());
         encargado.setEnabled(false);
         encargado.setVisible(false);
+        dolar.setText(dolar.getText()); 
+        dolar.setEnabled(false); 
+        precio2.setEnabled(false);  
     }
   
+    void parametros(){ 
+             String sql="";
+        sql="select * from parametros_adicionales where id_parametros_adicionales=1";
+        try {
+        java.sql.Statement st = cn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+        if(rs.first()){
+        dolar.setText(rs.getString("dolar"));
+        }
+        }
+        catch(SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al realizar la consulta");
+        
+         }}
+    
+    
+    
+    void calcular()
+    {
+        DecimalFormat RedondearADos = new DecimalFormat("####.##");
+        
+        float bolivares,dolares,finall;
+        bolivares= Float.parseFloat(this.precio.getText());
+        dolares= Float.parseFloat(this.dolar.getText());
+        finall=  (float) (bolivares/dolares);
+        this.precio2.setText(String.valueOf(finall)); 
+       
+    }
     
      void bitacorainsertar(){ 
         try{
@@ -219,7 +251,8 @@ public class Materiales extends javax.swing.JInternalFrame {
         modelo.addColumn("Nombre");
         modelo.addColumn("Descripcion");
         modelo.addColumn("Stock");
-        modelo.addColumn("Precio");
+        modelo.addColumn("Bolivares");
+        modelo.addColumn("Dolares");
         modelo.addColumn("Imagen");
         tabla40.setModel(modelo);
             
@@ -227,10 +260,10 @@ public class Materiales extends javax.swing.JInternalFrame {
     
        String sql="";
        if(valor.equals(sql)){ 
-            sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,nomimagen,imagen FROM materiales";             
+            sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,dolar_material,nomimagen,imagen FROM materiales ORDER BY nombre_material ASC";             
         }
         else { 
-           sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,nomimagen,imagen FROM materiales WHERE codigo_material='"+valor+"'";
+           sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,dolar_material,nomimagen,imagen FROM materiales WHERE codigo_material='"+valor+"'";
                    
         }
        
@@ -245,7 +278,7 @@ public class Materiales extends javax.swing.JInternalFrame {
                 datos[3]=rs.getString(4);
                 datos[4]=rs.getString(5);
                 datos[5]=rs.getString(6);
-
+                datos[6]=rs.getString(7);
                 
                 modelo.addRow(datos);
             }
@@ -257,7 +290,16 @@ public class Materiales extends javax.swing.JInternalFrame {
         
         
     }
- 
+  public void limpiar(){ 
+      codigo.setText(null);
+      nombre.setText(null);
+      descripcion.setText(null);
+      stock.setText(null);
+      precio.setText(null);
+      precio2.setText(null);
+      fotop.setText(null);
+      labelfoto1.setIcon(null);
+  }
  
  public void mostrar2(Object fecha){ 
     
@@ -268,20 +310,22 @@ public class Materiales extends javax.swing.JInternalFrame {
         modelo.addColumn("Nombre");
         modelo.addColumn("Descripcion");
         modelo.addColumn("Stock");
-        modelo.addColumn("Precio");
+        modelo.addColumn("Bolivares");
+        modelo.addColumn("Dolares");
         modelo.addColumn("Imagen");
         tabla40.setModel(modelo);
         String sql= "";
      
         if(fecha.equals(sql)){ 
-            sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,nomimagen,imagen FROM materiales ";             
+            sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,dolar_material,nomimagen,imagen FROM materiales ORDER BY nombre_material ASC";             
         }
         else { 
-            sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,nomimagen,imagen FROM materiales WHERE codigo_material lIKE '%"+fecha+"%'"
+            sql="SELECT codigo_material,nombre_material,descripcion_material,stock,precio_material,dolar_material,nomimagen,imagen FROM materiales WHERE codigo_material lIKE '%"+fecha+"%'"
                     + "or nombre_material lIKE '%"+fecha+"%' "
                     + "or descripcion_material lIKE '%"+fecha+"%' "
                     + "or stock lIKE '%"+fecha+"%' "
-                    + "or precio_material lIKE '%"+fecha+"%'";
+                    + "or precio_material lIKE '%"+fecha+"%'"
+                    + "or dolar_material lIKE '%"+fecha+"%'";
                    
         }
        
@@ -297,6 +341,7 @@ public class Materiales extends javax.swing.JInternalFrame {
                 datos[3]=rs.getString(4);
                 datos[4]=rs.getString(5);
                 datos[5]=rs.getString(6);
+                datos[6]=rs.getString(7);
             
                 modelo.addRow(datos);
             }
@@ -365,11 +410,17 @@ public class Materiales extends javax.swing.JInternalFrame {
         fotop = new javax.swing.JTextField();
         encargado = new javax.swing.JTextField();
         labelfoto1 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        precio2 = new javax.swing.JTextField();
+        dolar = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton12 = new javax.swing.JButton();
         buscarp = new javax.swing.JTextField();
         jButton13 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         FONDO = new javax.swing.JLabel();
 
         getContentPane().setLayout(null);
@@ -493,7 +544,7 @@ public class Materiales extends javax.swing.JInternalFrame {
         jLabel14.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         jLabel14.setText("Descripcion");
         jPanel2.add(jLabel14);
-        jLabel14.setBounds(70, 200, 150, 30);
+        jLabel14.setBounds(70, 170, 150, 30);
 
         descripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -506,12 +557,12 @@ public class Materiales extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(descripcion);
-        descripcion.setBounds(70, 230, 150, 30);
+        descripcion.setBounds(70, 200, 150, 30);
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         jLabel18.setText("Stock");
         jPanel2.add(jLabel18);
-        jLabel18.setBounds(280, 200, 120, 30);
+        jLabel18.setBounds(280, 170, 120, 30);
 
         stock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -519,12 +570,12 @@ public class Materiales extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(stock);
-        stock.setBounds(280, 230, 150, 30);
+        stock.setBounds(280, 200, 150, 30);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
-        jLabel13.setText("Precio");
+        jLabel13.setText("Precio en Bolivares");
         jPanel2.add(jLabel13);
-        jLabel13.setBounds(520, 200, 120, 30);
+        jLabel13.setBounds(70, 270, 180, 30);
 
         precio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -537,7 +588,7 @@ public class Materiales extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(precio);
-        precio.setBounds(520, 230, 150, 30);
+        precio.setBounds(70, 300, 150, 30);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
@@ -548,7 +599,7 @@ public class Materiales extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         jLabel5.setText("Imagen");
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(520, 70, 140, 30);
+        jLabel5.setBounds(500, 70, 140, 30);
 
         btnimagen.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         btnimagen.setText("Seleccionar");
@@ -558,15 +609,61 @@ public class Materiales extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(btnimagen);
-        btnimagen.setBounds(520, 100, 150, 30);
+        btnimagen.setBounds(490, 100, 150, 30);
         jPanel2.add(fotop);
-        fotop.setBounds(520, 130, 150, 30);
+        fotop.setBounds(490, 130, 150, 30);
         jPanel2.add(encargado);
         encargado.setBounds(750, 70, 70, 30);
 
         labelfoto1.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5, 5, 5, new java.awt.Color(255, 51, 51)));
         jPanel2.add(labelfoto1);
         labelfoto1.setBounds(670, 100, 240, 240);
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        jLabel15.setText("Valor del dolar");
+        jPanel2.add(jLabel15);
+        jLabel15.setBounds(490, 170, 140, 30);
+
+        precio2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                precio2ActionPerformed(evt);
+            }
+        });
+        precio2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precio2KeyTyped(evt);
+            }
+        });
+        jPanel2.add(precio2);
+        precio2.setBounds(410, 300, 150, 30);
+
+        dolar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dolarActionPerformed(evt);
+            }
+        });
+        dolar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                dolarKeyTyped(evt);
+            }
+        });
+        jPanel2.add(dolar);
+        dolar.setBounds(510, 200, 90, 30);
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        jLabel16.setText("Precio en Dolares");
+        jPanel2.add(jLabel16);
+        jLabel16.setBounds(410, 270, 170, 30);
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        jButton2.setText("Calcular");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2);
+        jButton2.setBounds(300, 300, 110, 30);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 0, 910, 340);
@@ -605,6 +702,16 @@ public class Materiales extends javax.swing.JInternalFrame {
         jPanel1.add(jButton13);
         jButton13.setBounds(190, 170, 190, 40);
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        jButton1.setText("Actualizar precios");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(120, 280, 200, 50);
+
         getContentPane().add(jPanel1);
         jPanel1.setBounds(910, 0, 450, 340);
 
@@ -638,13 +745,15 @@ public class Materiales extends javax.swing.JInternalFrame {
             String des=tabla40.getValueAt(fila, 2).toString();           
             String stoc=tabla40.getValueAt(fila, 3).toString();
             String pre=tabla40.getValueAt(fila, 4).toString();
-            String fot=tabla40.getValueAt(fila, 5).toString();
+            String pre2=tabla40.getValueAt(fila, 5).toString();
+            String fot=tabla40.getValueAt(fila, 6).toString();
 
             codigo.setText(cod);
             nombre.setText(nom);
             descripcion.setText(des);
-            precio.setText(pre);
             stock.setText(stoc);
+            precio.setText(pre);
+            precio2.setText(pre2);
             fotop.setText(fot);
 
             Image fotoc = getToolkit().getImage(fot);
@@ -665,7 +774,7 @@ public class Materiales extends javax.swing.JInternalFrame {
         FileInputStream  archivofoto;
         File nombrefoto= new File(fotop.getText());
         archivofoto = new FileInputStream(nombrefoto);
-        String sql="UPDATE materiales SET codigo_material = ?, nombre_material = ?, descripcion_material = ?, stock = ?, precio_material = ?,nomimagen = ?, imagen=? WHERE codigo_material = '"+codigo.getText()+"'"; 
+        String sql="UPDATE materiales SET codigo_material = ?, nombre_material = ?, descripcion_material = ?, stock = ?, precio_material = ?, dolar_material = ?, nomimagen = ?, imagen=? WHERE codigo_material = '"+codigo.getText()+"'"; 
 
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setString(1, codigo.getText());
@@ -673,21 +782,17 @@ public class Materiales extends javax.swing.JInternalFrame {
             pst.setString(3, descripcion.getText());
             pst.setString(4, stock.getText());
             pst.setString(5, precio.getText());
-            pst.setString(6, fotop.getText());
+            pst.setString(6, precio2.getText());
+            pst.setString(7, fotop.getText());
             archivofoto = new FileInputStream(fotop.getText());
-            pst.setBinaryStream(7, archivofoto);
+            pst.setBinaryStream(8, archivofoto);
 
             int n= pst.executeUpdate();
             mostrar("");
-            fotop.setText(null);
-            labelfoto1.setIcon(null);
+            limpiar();
            
-        } catch (SQLException ex) {
-            Logger.getLogger(Materiales.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Materiales.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
         bitacoraactualizar();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -722,26 +827,28 @@ public class Materiales extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-         try{
+        try{
             FileInputStream archivofoto;
             PreparedStatement pst=cn.prepareStatement
-            ("INSERT INTO materiales (codigo_material,nombre_material,descripcion_material,stock,precio_material,nomimagen,imagen) VALUES (?,?,?,?,?,?,?)");
+            ("INSERT INTO materiales (codigo_material,nombre_material,descripcion_material,stock,precio_material,dolar_material,nomimagen,imagen) VALUES (?,?,?,?,?,?,?,?)");
             pst.setString(1, codigo.getText());
             pst.setString(2, nombre.getText());
             pst.setString(3, descripcion.getText());
             pst.setString(4, stock.getText());
             pst.setString(5, precio.getText());
-            pst.setString(6, fotop.getText());
-            archivofoto=new FileInputStream(fotop.getText());
-            pst.setBinaryStream(7, archivofoto);
+            pst.setString(6, precio2.getText());
+            pst.setString(7, fotop.getText());
+            archivofoto=null;
+            pst.setBinaryStream(8, archivofoto);
             pst.executeUpdate();
-            mostrar("");
-         }
-        catch(Exception e){
+            mostrar("");         
+         } catch(Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage());
-
-         }
+        }
          bitacorainsertar();
+         limpiar();
+         
+         
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyTyped
@@ -800,6 +907,39 @@ public class Materiales extends javax.swing.JInternalFrame {
         bitacoraexcel();
     }//GEN-LAST:event_jButton13ActionPerformed
 
+    private void precio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_precio2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_precio2ActionPerformed
+
+    private void precio2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precio2KeyTyped
+        
+    }//GEN-LAST:event_precio2KeyTyped
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+        String sql="UPDATE materiales SET precio_material=dolar_material*'"+dolar.getText()+"'"; 
+            PreparedStatement pst = cn.prepareStatement(sql);
+          //pst.setString(5, precio.getText());
+            pst.executeUpdate();
+            mostrar("");          
+        } catch (SQLException ex) {
+            Logger.getLogger(Materiales.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        } 
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void dolarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dolarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dolarActionPerformed
+
+    private void dolarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dolarKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dolarKeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        calcular();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FONDO;
@@ -807,11 +947,14 @@ public class Materiales extends javax.swing.JInternalFrame {
     private javax.swing.JTextField buscarp;
     private javax.swing.JTextField codigo;
     private javax.swing.JTextField descripcion;
+    private javax.swing.JTextField dolar;
     private javax.swing.JTextField encargado;
     private javax.swing.JTextField fotop;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
@@ -820,6 +963,8 @@ public class Materiales extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -831,6 +976,7 @@ public class Materiales extends javax.swing.JInternalFrame {
     private javax.swing.JTextField nombre;
     public static javax.swing.JTextField p2;
     private javax.swing.JTextField precio;
+    private javax.swing.JTextField precio2;
     private javax.swing.JTextField stock;
     private javax.swing.JTable tabla40;
     // End of variables declaration//GEN-END:variables

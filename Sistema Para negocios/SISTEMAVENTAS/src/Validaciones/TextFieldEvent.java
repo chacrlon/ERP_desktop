@@ -42,7 +42,7 @@ public class TextFieldEvent {
         if((car < '0' || car > '9')&&textField.getText().contains(".")
                 &&(car !=(char) KeyEvent.VK_BACK_SPACE)){ 
             evt.consume();
-        }else if((car < '0' || car > '9')&&(car!=',')
+        }else if((car < '0' || car > '9')&&(car!='.')
                 &&(car !=(char) KeyEvent.VK_BACK_SPACE)){ 
             evt.consume();
         }

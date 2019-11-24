@@ -68,10 +68,28 @@ public class Parametros extends javax.swing.JInternalFrame {
         encargado.setText(p1.getText());
         encargado.setEnabled(false);
         encargado.setVisible(false);
-        
+        parametros();
         
     }
-
+  
+    void parametros(){ 
+             String sql="";
+        sql="select * from parametros_adicionales where id_parametros_adicionales=1";
+        try {
+        java.sql.Statement st = cn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+        if(rs.first()){
+            iva.setText(rs.getString("porcentaje_iva_v"));
+            descuento.setText(rs.getString("porcentaje_descuento"));
+            dolar.setText(rs.getString("dolar"));
+        }
+        }
+        catch(SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al realizar la consulta");
+        
+         }}
+    
+    
          void calcular()
     {
         double preciox=0;
@@ -133,6 +151,8 @@ public class Parametros extends javax.swing.JInternalFrame {
         descuento = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         ID = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        dolar = new javax.swing.JTextField();
         encargado = new javax.swing.JTextField();
         FONDO = new javax.swing.JLabel();
 
@@ -147,7 +167,7 @@ public class Parametros extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(jButton11);
-        jButton11.setBounds(170, 220, 190, 50);
+        jButton11.setBounds(170, 330, 190, 50);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5, 5, 5, new java.awt.Color(204, 204, 204)));
@@ -187,10 +207,29 @@ public class Parametros extends javax.swing.JInternalFrame {
         jPanel2.add(ID);
         ID.setBounds(800, 310, 100, 20);
 
+        jLabel17.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        jLabel17.setText("Valor del dolar");
+        jPanel2.add(jLabel17);
+        jLabel17.setBounds(90, 220, 150, 30);
+
+        dolar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                dolarKeyTyped(evt);
+            }
+        });
+        jPanel2.add(dolar);
+        dolar.setBounds(260, 220, 150, 30);
+
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 0, 520, 220);
+        jPanel2.setBounds(0, 0, 520, 310);
+
+        encargado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                encargadoActionPerformed(evt);
+            }
+        });
         getContentPane().add(encargado);
-        encargado.setBounds(230, 280, 70, 30);
+        encargado.setBounds(230, 410, 70, 30);
 
         FONDO.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Fondo.JPG"))); // NOI18N
         getContentPane().add(FONDO);
@@ -204,6 +243,7 @@ try{
             PreparedStatement pst=cn.prepareStatement("UPDATE parametros_adicionales "
                 + "SET porcentaje_iva_v='"+iva.getText()
                 +"',porcentaje_descuento='"+descuento.getText()
+                +"',dolar='"+dolar.getText()
                 +"' WHERE id_parametros_adicionales=1"             
             );
             pst.executeUpdate();
@@ -223,16 +263,26 @@ try{
         evento.numberKeyPress(evt);
     }//GEN-LAST:event_descuentoKeyTyped
 
+    private void encargadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encargadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_encargadoActionPerformed
+
+    private void dolarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dolarKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dolarKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FONDO;
     private javax.swing.JTextField ID;
     private javax.swing.JTextField descuento;
+    private javax.swing.JTextField dolar;
     private javax.swing.JTextField encargado;
     private javax.swing.JTextField iva;
     private javax.swing.JButton jButton11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
